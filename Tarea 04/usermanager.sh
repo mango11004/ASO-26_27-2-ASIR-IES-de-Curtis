@@ -11,7 +11,7 @@ creargrupo() { #Funcion para comprobar si el grupo existe y crearlo en caso de q
     echo -e "\nComprobando grupo $grupo"
     sleep 1
     checkgrupo=$(grep "^$grupo" /etc/group)
-    if [[ "$grupo" =~ [[:space:]] ]]; then
+    if [[ "$grupo" =~ [[:space:]] ]]; then # Comprobamos con una expresión regular que el nombre del grupo no tenga espacios, si tuviera espacios fallaria la creación del grupo
         echo "Error al crear el grupo $grupo: no puede contener espacios" >>$archivo
     else
         if [ "$checkgrupo" = "" ]; then
