@@ -32,7 +32,3 @@ Puedes navegar por cada carpeta para consultar el contenido de cada ejercicio o 
 ## 🧾 Estado
 
 El proyecto se encuentra en desarrollo y se actualiza conforme se realizan nuevos ejercicios y tareas.
-
----
-
-Si quieres, también puedo dejarte una versión más "profesional", con badges, una sección de índice y estilo más académico.
