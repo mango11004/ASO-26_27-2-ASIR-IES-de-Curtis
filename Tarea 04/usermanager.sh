@@ -16,7 +16,7 @@ creargrupo() { #Funcion para comprobar si el grupo existe y crearlo en caso de q
         groupadd $grupo
         echo "Creado el grupo $grupo para el usuario $nombreuser" >>$archivo
     else
-        echo "Error al crear el grupo $grupo: el grupo ya existe" >>$archivo
+        echo "Error al crear el grupo $grupo" >>$archivo
     fi
 }
 
