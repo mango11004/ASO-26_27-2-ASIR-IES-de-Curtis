@@ -1,5 +1,0 @@
-C:pera:Abc12345:pera:/home/pera:fruta
-C:manzana:Nueva2026:manzana:/home/manzana:fruta
-U:manzana:Nueva2027:manzana:/home/manzana:fruta2
-C:piña:fruta:piña:/home/piña:fruta3
-D:piña

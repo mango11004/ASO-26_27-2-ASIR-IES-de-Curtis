@@ -1,9 +1,0 @@
-Información del usuario: script
-        ---------------------------------------------------------------
-        Usuario: script
-        Nombre: Scripts User
-        Directorio de trabajo: /home/script
-        Id. Usuario: 1002
-        Grupo principal: 1002
-        Grupo secundario: script
-        Interprete de comandos: /bin/sh
