@@ -119,7 +119,7 @@ fi
 fecha=$(date -d now +%d/%m/%Y)
 hora=$(date -d now +%T)
 fecharchivo=$(date -d now +%Y%m%d%H%M)
-archivo="$fecharchivo""_usermanager_"$RANDOM".txt"
+archivo="/var/log/usermanager/""$fecharchivo""_usermanager_"$RANDOM".txt"
 
 echo "Inicio: $fecha $hora" >$archivo
 
