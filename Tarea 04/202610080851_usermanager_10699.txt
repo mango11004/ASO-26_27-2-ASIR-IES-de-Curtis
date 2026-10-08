@@ -1,0 +1,11 @@
+Inicio: 08/10/2026 08:51:05
+Error al crear el grupo frutaz: el grupo ya existe
+Error al crear el usuario pera: el usuario ya existe
+Error al crear el grupo frutaz: el grupo ya existe
+Error al crear el usuario manzana: el usuario ya existe
+Error al crear el grupo fruta2z: el grupo ya existe
+Usuario actualizado correctamente: manzana
+Error al crear el grupo fruta3z: el grupo ya existe
+Usuario creado correctamente: piña
+Error al borrar el usuario: el usuario piña no existe
+Fin: 08/10/2026 08:51:17

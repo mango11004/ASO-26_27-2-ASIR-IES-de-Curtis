@@ -1,0 +1,54 @@
+# ===========================================================================
+# Fichero de operaciones de usuarios - Práctica 4 Script usermanager.sh
+# 
+# Formato: operación:usuario:contraseña:nombre completo:directorio personal:grupo principal
+# 
+# ===========================================================================
+
+# --- ALTAS CORRECTAS ---
+C:amenta:Menta2026:Aitor Menta Fuerte:/home/amenta:alumnado
+C:epato:Zapato#2026:Elsa Pato Blanco:/home/epato:alumnado
+C:soria:Zanahoria26:Susana Oria Verde:/home/soria:alumnado
+C:lmento:Lamento2026:Lola Mento:/home/lmento:alumnado
+C:abronca:Bronca2026:Armando Bronca Segura:/home/abronca:alumnado
+C:aerador:Acelera2026:Axel Erador Pisado:/home/aerador:profesorado
+C:abrito:Alambre2026:Alan Brito Delgado:/home/abrito:profesorado
+C:dmita:Explota2026:Dina Mita Grande:/home/dmita:administracion
+C:mneta:Hilos2026:Mario Neta Demadera:/home/mneta:administracion
+C:equito:Quieto2026:Esteban Quito Negro:/home/equito:administracion
+
+# --- ALTAS CON ERROR ---
+# Usuario duplicado (Aitor ya existe)
+C:amenta:Otra2026:Aitor Menta Fuerte:/home/amenta:alumnado
+# Directorio personal que no es una ruta absoluta
+C:tarde:Reloj2026:Justo a Tiempo Tarde:home/tarde:alumnado
+# Nombre de grupo no válido (lleva espacios)
+C:mago:Abracadabra:Merlín Mago:/home/mago:club de la comedia
+
+# --- ACTUALIZACIONES CORRECTAS ---
+# Elsa cambia de nombre completo, de contraseña y de grupo
+U:epato:NuevoZapato26:Elsa Pato Calzada:/home/epato:profesorado
+# Susana cambia de directorio personal y de grupo
+U:soria:Zumo2026:Susana Oria Juliana:/home/soria2:administracion
+
+# --- ACTUALIZACIÓN CON ERROR ---
+# Usuario que no existe
+U:fantasmita:Bu2026:Fantasmita Casper:/home/fantasmita:alumnado
+
+# --- BAJAS CORRECTAS ---
+D:mneta
+D:dmita
+
+# --- BAJAS CON ERROR ---
+# Usuario que no existe
+D:nadie
+# UID inferior a 1000
+D:root
+
+# --- LÍNEAS CON FORMATO ERRÓNEO ---
+# Faltan campos en una alta
+C:incompleto:soloclave
+# Sobran campos en una baja
+D:dos:campos:de_mas
+# Operación desconocida
+X:operacion:misteriosa:::
