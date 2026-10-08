@@ -1,5 +1,5 @@
 #!/bin/bash
-# Tarea 01
+# Tarea 04
 # El Script espera en el parametro 1 el fichero (formateado asi operacion:usuario:contrasena:"nombre completo":directorio_home:grupo_principal)
 # y en el menu el modo de operacion (A,C,D,U)
 # Manuel González López
