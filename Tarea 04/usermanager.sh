@@ -133,7 +133,7 @@ for variablefor in $(cat $1); do
     contrasena=$(echo "$variablefor" | cut -d: -f3)
     nombrecompleto=$(echo "$variablefor" | cut -d: -f4)
     casa=$(echo "$variablefor" | cut -d: -f5)
-    grupo=$(echo "$variablefor" | cut -d: -f6)z
+    grupo=$(echo "$variablefor" | cut -d: -f6)
 
     #Case para el modo de operacion deseado, en cada caso se implementan las funciones listadas arriba
 

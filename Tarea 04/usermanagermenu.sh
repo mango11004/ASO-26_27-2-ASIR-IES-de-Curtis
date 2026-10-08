@@ -10,7 +10,7 @@ IFS=$'\n'
 creargrupo() { #Funcion para comprobar si el grupo existe y crearlo en caso de que no exista
     echo -e "\nComprobando grupo $grupo"
     sleep 1
-    checkgrupo=$(grep ^$grupo /etc/group)
+    checkgrupo=$(grep "^$grupo" /etc/group)
     if [ "$checkgrupo" = "" ]; then
         groupadd $grupo
         echo "Creado el grupo $grupo para el usuario $nombreuser" >>$archivo
@@ -20,6 +20,7 @@ creargrupo() { #Funcion para comprobar si el grupo existe y crearlo en caso de q
 }
 
 crearuser() { #Funcion para comprobar si existe el usuario y la crearlo en caso de que no exista
+    clear
     creargrupo
     echo -e "\nCreando usuario $nombreuser"
     sleep 1
@@ -131,16 +132,17 @@ for variablefor in $(cat $1); do
 
     #Variables que cambian con cada bucle
 
+    cutcomentario=$(echo "$variablefor" | cut -c1)
     modooperacion=$(echo "$variablefor" | cut -d: -f1)
     nombreuser=$(echo "$variablefor" | cut -d: -f2)
     contrasena=$(echo "$variablefor" | cut -d: -f3)
     nombrecompleto=$(echo "$variablefor" | cut -d: -f4)
     casa=$(echo "$variablefor" | cut -d: -f5)
-    grupo=$(echo "$variablefor" | cut -d: -f6)z
+    grupo=$(echo "$variablefor" | cut -d: -f6)
 
     #Case para el modo de operacion deseado, en cada caso se implementan las funciones listadas arriba
 
-    case $readoperacion in
+    case $2 in
     A)
         echo -e "\nModo de operación: Todo"
         if [ "$modooperacion" = "C" ]; then
@@ -155,7 +157,7 @@ for variablefor in $(cat $1); do
                     updateuser
                     continue
                 else
-                    if [ "$cutcomentario" = "#" ]; then
+                    if [ "$cutcomentario" = "#" ]; then # Como condicion extra, si se detecta un comentario lo omite
                         echo "Saltando comentario" >>$archivo
                         continue
                     else
@@ -171,7 +173,7 @@ for variablefor in $(cat $1); do
         if [ $modooperacion = "C" ]; then
             crearuser
         else
-            if [ "$cutcomentario" = "#" ]; then
+            if [ "$cutcomentario" = "#" ]; then # Como condicion extra, si se detecta un comentario lo omite
                 echo "Saltando comentario" >>$archivo
                 continue
             else
@@ -186,7 +188,7 @@ for variablefor in $(cat $1); do
         if [ $modooperacion = "D" ]; then
             borraruser
         else
-            if [ "$cutcomentario" = "#" ]; then
+            if [ "$cutcomentario" = "#" ]; then # Como condicion extra, si se detecta un comentario lo omite
                 echo "Saltando comentario" >>$archivo
                 continue
             else
@@ -202,7 +204,7 @@ for variablefor in $(cat $1); do
         if [ $modooperacion = "U" ]; then
             updateuser
         else
-            if [ "$cutcomentario" = "#" ]; then
+            if [ "$cutcomentario" = "#" ]; then # Como condicion extra, si se detecta un comentario lo omite
                 echo "Saltando comentario" >>$archivo
                 continue
             else
@@ -211,10 +213,6 @@ for variablefor in $(cat $1); do
             fi
         fi
         clear
-        ;;
-    E)
-        echo "Saliendo del script"
-        exit 0
         ;;
     *)
         echo -e "\nError, el modo de operación no es válido, error 2"
