@@ -1,9 +1,0 @@
-Información del usuario: mango
-        ---------------------------------------------------------------
-        Usuario: mango
-        Nombre: Manuel
-        Directorio de trabajo: /home/mango
-        Id. Usuario: 1003
-        Grupo principal: 1003
-        Grupo secundario: mango sudo
-        Interprete de comandos: /bin/sh

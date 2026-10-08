@@ -1,9 +1,0 @@
-Información del usuario: vboxadd
-        ---------------------------------------------------------------
-        Usuario: vboxadd
-        Nombre: 
-        Directorio de trabajo: /var/run/vboxadd
-        Id. Usuario: 997
-        Grupo principal: 1
-        Grupo secundario: daemon
-        Interprete de comandos: /bin/false
