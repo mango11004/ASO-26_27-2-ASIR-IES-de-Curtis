@@ -1,0 +1,4 @@
+C:jperez:Abc12345:Juan Pérez López:/home/jperez:alumnado
+C:mgarcia:Nueva2026:María García Ruiz:/home/mgarcia:profesorado
+U:mgarcia:Nueva2027:María García Ruiz:/home/mgarcia:profesorado
+D:pgomez

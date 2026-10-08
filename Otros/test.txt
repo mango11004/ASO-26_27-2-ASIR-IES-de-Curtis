@@ -1,0 +1,5 @@
+mango
+manzana
+platano
+aguacate
+pera
