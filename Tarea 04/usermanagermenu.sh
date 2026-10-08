@@ -11,12 +11,17 @@ creargrupo() { #Funcion para comprobar si el grupo existe y crearlo en caso de q
     echo -e "\nComprobando grupo $grupo"
     sleep 1
     checkgrupo=$(grep "^$grupo" /etc/group)
-    if [ "$checkgrupo" = "" ]; then
-        groupadd $grupo
-        echo "Creado el grupo $grupo para el usuario $nombreuser" >>$archivo
+    if [[ "$grupo" =~ [[:space:]] ]]; then
+        echo "Error al crear el grupo $grupo: no puede contener espacios" >>$archivo
     else
-        echo "Error al crear el grupo $grupo: el grupo ya existe" >>$archivo
+        if [ "$checkgrupo" = "" ]; then
+            groupadd $grupo
+            echo "Creado el grupo $grupo para el usuario $nombreuser" >>$archivo
+        else
+            echo "Error al crear el grupo $grupo: el grupo ya existe" >>$archivo
+        fi
     fi
+
 }
 
 crearuser() { #Funcion para comprobar si existe el usuario y la crearlo en caso de que no exista
