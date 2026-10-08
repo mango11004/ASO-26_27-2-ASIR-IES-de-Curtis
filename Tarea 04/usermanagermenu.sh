@@ -21,7 +21,6 @@ creargrupo() { #Funcion para comprobar si el grupo existe y crearlo en caso de q
             echo "Error al crear el grupo $grupo: el grupo ya existe" >>$archivo
         fi
     fi
-
 }
 
 crearuser() { #Funcion para comprobar si existe el usuario y la crearlo en caso de que no exista
@@ -166,6 +165,7 @@ for variablefor in $(cat $1); do
                 else
                     if [ "$cutcomentario" = "#" ]; then # Como condicion extra, si se detecta un comentario lo omite
                         echo "Saltando comentario" >>$archivo
+                        clear
                         continue
                     else
                         echo "Error en el usuario $nombreuser"
@@ -182,6 +182,7 @@ for variablefor in $(cat $1); do
         else
             if [ "$cutcomentario" = "#" ]; then # Como condicion extra, si se detecta un comentario lo omite
                 echo "Saltando comentario" >>$archivo
+                clear
                 continue
             else
                 clear
@@ -197,6 +198,7 @@ for variablefor in $(cat $1); do
         else
             if [ "$cutcomentario" = "#" ]; then # Como condicion extra, si se detecta un comentario lo omite
                 echo "Saltando comentario" >>$archivo
+                clear
                 continue
             else
                 clear
@@ -213,6 +215,7 @@ for variablefor in $(cat $1); do
         else
             if [ "$cutcomentario" = "#" ]; then # Como condicion extra, si se detecta un comentario lo omite
                 echo "Saltando comentario" >>$archivo
+                clear
                 continue
             else
                 clear
