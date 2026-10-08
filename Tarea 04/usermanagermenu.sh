@@ -20,7 +20,6 @@ creargrupo() { #Funcion para comprobar si el grupo existe y crearlo en caso de q
 }
 
 crearuser() { #Funcion para comprobar si existe el usuario y la crearlo en caso de que no exista
-    clear
     creargrupo
     echo -e "\nCreando usuario $nombreuser"
     sleep 1
@@ -28,10 +27,13 @@ crearuser() { #Funcion para comprobar si existe el usuario y la crearlo en caso 
     if [ $? = 0 ]; then
         echo "Error al crear el usuario $nombreuser: el usuario ya existe" >>$archivo
     else
-
         useradd -d $casa -m -c "$nombrecompleto" -s /bin/bash -g $grupo $nombreuser 2>/dev/null
-        echo "$nombreuser:$contrasena" | chpasswd
-        echo "Usuario creado correctamente: $nombreuser" >>$archivo
+        if [ $? = 0 ]; then
+            echo "$nombreuser:$contrasena" | chpasswd
+            echo "Usuario creado correctamente: $nombreuser" >>$archivo
+        else
+            echo "Fallo la creacion del usuario $nombreuser" >>$archivo
+        fi
     fi
     clear
 }
