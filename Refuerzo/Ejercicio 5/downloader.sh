@@ -7,23 +7,24 @@ registro() {
     fecha=$(date -d now +%d/%m/%Y)
     hora=$(date -d now +%T)
     if [ $1 = "I" ]; then
-        echo "INFO ($fecha $hora): $2" >$archivo
+        echo "INFO ($fecha $hora): $2" >>"$archivo"
     else
         if [ $1 = "E" ]; then
-            echo "ERROR ($fecha $hora): $2" >$archivo
+            echo "ERROR ($fecha $hora): $2" >>"$archivo"
         else
-            echo "ERROR ($fecha $hora) desconocido" >$archivo
+            echo "ERROR ($fecha $hora) desconocido" >>"$archivo"
         fi
     fi
 }
 
-archivo="log_downloader.txt"
-
 directorio=$(pwd)
+archivo="$directorio/log_downloader.txt"
 
 if [ ! -f "$archivo" ]; then
     touch "$archivo"
 fi
+
+registro I "Inicio"
 
 wget --version >/dev/null 2>&1
 if [ $? = 0 ]; then
@@ -69,7 +70,7 @@ fi
 
 echo "Comprobando si la URL ($1) es valida"
 
-registro I "Se va a descargar la URL $1"
+registro I "Se va a descargar la URL ($1)"
 
 wget --spider $1 >/dev/null 2>&1
 if [ $? = 0 ]; then
