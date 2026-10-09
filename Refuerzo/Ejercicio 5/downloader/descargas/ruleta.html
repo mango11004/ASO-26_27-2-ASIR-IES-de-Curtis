@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ruleta de juegos - La Mango Web</title>
+  <link rel="icon" type="image/x-icon" href="favicon.png">
+  <style>
+    /* Estilos globales */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #f9f9f9, #ececec);
+      color: #333;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.dark-mode {
+      background: linear-gradient(135deg, #1e1e1e, #2d2d2d);
+      color: #f1f1f1;
+    }
+    /* Header centrado */
+    header {
+      text-align: center;
+      padding: 20px 0;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+    /* Toggle de modo oscuro (fijo en la esquina superior derecha) */
+    .dark-mode-toggle {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 28px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 28px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #007bff;
+    }
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+    .modo-icon {
+      font-size: 24px;
+      user-select: none;
+    }
+    /* Contenedor principal */
+    .container {
+      max-width: 400px;
+      margin: 1% auto 0;
+      padding: 20px;
+      text-align: center;
+    }
+    /* Sección de ruleta */
+    .roulette-section {
+      margin: 20px 0;
+    }
+    /* Icono de mando gamer */
+    .gamepad-icon {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 10px;
+    }
+    .roulette-btn {
+      display: block;
+      width: 100%;
+      padding: 15px 0;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .roulette-btn:hover {
+      background-color: #0056b3;
+    }
+    /* Resultado de la ruleta */
+    .resultado {
+      margin-top: 20px;
+    }
+    .game-cover {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border: 3px solid #007bff;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .game-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    /* Botón "Volver" */
+    .volver-btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 20px;
+      background-color: #f39c12;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+    .volver-btn:hover {
+      background-color: #d35400;
+    }
+  </style>
+</head>
+<body class="dark-mode"><a href="https://www.mango11004.es/cdn-cgi/content?id=gDB8gniN_FLwDogW3drNzJTfjqQ1igtrvmgdgSskswM-1791538348.7012038-1.2.1.1-hSRBQjsD4aN_moYtoTUx5oSygt7yBtksOxST5f5VZAwECbypQc58kyQx3.JYFU1n" aria-hidden="true" rel="nofollow noopener" style="display: none !important; visibility: hidden !important"></a>
+  <!-- Header centrado -->
+  <header>
+    <h1>Ruleta de juegos</h1>
+  </header>
+
+  <!-- Toggle de modo oscuro en esquina superior derecha -->
+  <div class="dark-mode-toggle">
+    <label class="switch">
+      <input type="checkbox" id="modoOscuroToggle" checked>
+      <span class="slider"></span>
+    </label>
+    <span id="modoIcon" class="modo-icon">🌙</span>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="container">
+    <img src="https://cdn-icons-png.flaticon.com/512/214/214304.png" alt="Mando Gamer" class="gamepad-icon">
+    <h2>Ruleta de juegos</h2>
+    <p>Haz clic en "Girar ruleta" para seleccionar un juego al azar</p>
+    <div class="roulette-section">
+      <button class="roulette-btn" id="spinButton">Girar ruleta</button>
+    </div>
+    <div class="resultado" id="resultado"></div>
+    <!-- Botón para volver al inicio -->
+    <button class="volver-btn" onclick="window.location.href='index.html'">Volver</button>
+  </div>
+
+  <script>
+    // MODO OSCURO
+    const toggleCheckbox = document.getElementById("modoOscuroToggle");
+    const modoIcon = document.getElementById("modoIcon");
+    
+    function actualizarIcono() {
+      modoIcon.textContent = toggleCheckbox.checked ? "🌙" : "☀️";
+    }
+    actualizarIcono();
+    
+    toggleCheckbox.addEventListener("change", function() {
+      document.body.classList.toggle("dark-mode", this.checked);
+      actualizarIcono();
+    });
+    
+    // RULETA DE JUEGOS
+    const games = [
+      { name: "Roblox", cover: "https://i.harperapps.com/covers/9780062862617/y648.jpg" },
+      { name: "Dark Souls", cover: "https://img.lazcdn.com/g/p/7a365769f9b950523b799f6bebdd0c5a.png_720x720q80.png" },
+      { name: "Minecraft", cover: "https://cdn.mobygames.com/covers/9261167-minecraft-playstation-4-front-cover.jpg" },
+      { name: "Fortnite", cover: "https://th.bing.com/th/id/OIP.-d1p2Hl7wIaVAbXcnwAi8gHaHa?cb=iwp2&rs=1&pid=ImgDetMain" },
+      { name: "GTA V", cover: "https://th.bing.com/th/id/OIP.XnY39z8vEhz3wBnEhST1IgHaJD?cb=iwp2&rs=1&pid=ImgDetMain" }
+    ];
+    
+    const spinButton = document.getElementById("spinButton");
+    const resultadoDiv = document.getElementById("resultado");
+    
+    spinButton.addEventListener("click", function() {
+      // Vaciar el resultado previo
+      resultadoDiv.innerHTML = "";
+      // Crear la imagen con el GIF de la ruleta girando
+      const spinningGif = document.createElement("img");
+      spinningGif.src = "https://media.giphy.com/media/d8i03eEeIQY3kqPk9N/giphy.gif";
+      spinningGif.alt = "Ruleta girando";
+      spinningGif.style.width = "150px";
+      spinningGif.style.height = "150px";
+      // Asegurarse que tenga fondo transparente (si el GIF lo soporta)
+      spinningGif.style.background = "transparent";
+      resultadoDiv.appendChild(spinningGif);
+      
+      // Después de 3 segundos se muestra el juego seleccionado
+      setTimeout(function() {
+        // Limpiar la animación
+        resultadoDiv.innerHTML = "";
+        // Seleccionar un juego aleatorio
+        const randomIndex = Math.floor(Math.random() * games.length);
+        const selectedGame = games[randomIndex];
+        
+        // Crear y mostrar la carátula y el nombre del juego seleccionado
+        const img = document.createElement("img");
+        img.src = selectedGame.cover;
+        img.alt = selectedGame.name;
+        img.className = "game-cover";
+        
+        const title = document.createElement("div");
+        title.className = "game-title";
+        title.textContent = selectedGame.name;
+        resultadoDiv.appendChild(img);
+        resultadoDiv.appendChild(title);
+      }, 3000);
+    });
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a47c60d76dfd0359',t:'MTc5MTUzODM0OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

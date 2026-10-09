@@ -21,11 +21,11 @@ archivo="log_downloader.txt"
 
 directorio=$(pwd)
 
-if [ ! -f "$archivo"]; then
-    touch $archivo
+if [ ! -f "$archivo" ]; then
+    touch "$archivo"
 fi
 
-wget --version >/dev/null
+wget --version >/dev/null 2>&1
 if [ $? = 0 ]; then
     registro I "wget ya esta instalado"
 else
@@ -40,7 +40,7 @@ else
         exit 1
     else
         sudo apt update && sudo apt install wget
-        wget --version >/dev/null
+        wget --version >/dev/null 2>&1
         if [ $? = 0 ]; then
             echo "Instalado correctamente"
             sleep 2
@@ -57,15 +57,11 @@ clear
 
 echo "Los archivos descargados se almacenan en $directorio/downloader/descargas"
 sleep 1
-ls downloader/descargas
-if [ $? = 0 ]; then
-    mkdir -p $directorio/downloader/descargas
-    cd $directorio/downloader/descargas
-else
-    cd $directorio/downloader/descargas
-fi
 
-if [ $1 = ""]; then
+mkdir -p "$directorio/downloader/descargas"
+cd "$directorio/downloader/descargas"
+
+if [ "$1" = "" ]; then
     echo "Es necesario poner una URL en el 1º parametro, error 3"
     registro E "Es necesario poner una URL en el 1º parametro, error 3"
     exit 3
@@ -75,8 +71,8 @@ echo "Comprobando si la URL ($1) es valida"
 
 registro I "Se va a descargar la URL $1"
 
-wget --spider $1
-if [ $? = 0]; then
+wget --spider $1 >/dev/null 2>&1
+if [ $? = 0 ]; then
     registro I "La URL ($1) es valida"
     echo "La URL es valida"
 else
@@ -85,7 +81,7 @@ else
     exit 4
 fi
 
-wget -q -p $directorio/downloader/descargas $1
+wget -q -P "$directorio/downloader/descargas" "$1"
 
 case $? in
 0)

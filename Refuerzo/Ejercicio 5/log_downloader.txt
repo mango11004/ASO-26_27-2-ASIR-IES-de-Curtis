@@ -1,1 +1,1 @@
-ERROR (09/10/2026 11:21:17): Es necesario poner una URL en el 1º parametro, error 3
+INFO (09/10/2026 11:32:27): wget ya esta instalado
