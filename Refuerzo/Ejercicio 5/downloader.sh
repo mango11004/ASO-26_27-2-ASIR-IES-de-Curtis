@@ -3,6 +3,20 @@
 # Manuel González López
 # Data: 09-10-2026
 
+registro() {
+    fecha=$(date -d now +%d/%m/%Y)
+    hora=$(date -d now +%T)
+    if [ $1 = "I" ]; then
+        echo "INFO ($fecha $hora): $2" >$archivo
+    else
+        if [ $1 = "E" ]; then
+            echo "ERROR ($fecha $hora): $2" >$archivo
+        else
+            echo "ERROR ($fecha $hora) desconocido" >$archivo
+        fi
+    fi
+}
+
 archivo="log_downloader.txt"
 
 directorio=$(pwd)
@@ -13,15 +27,15 @@ fi
 
 wget --version >/dev/null
 if [ $? = 0 ]; then
-    echo "INFO: wget ya esta instalado" >$archivo
+    registro I "wget ya esta instalado"
 else
     echo "Necesitamos instalar wget, vas a necesitar sudo"
-    echo "INFO: Necesitamos instalar wget" >$archivo
+    registro I "Necesitamos instalar wget"
     sleep 1
     read -p "¿Lo instalamos? (S/N): " opcionapt
     if [ "$opcionapt" = "N" -o "$opcionapt" = "n" ]; then
         echo "Operación cancelada por el usuario, error 1"
-        echo "INFO: Operación cancelada por el usuario, error 1" >$archivo
+        registro I "Operación cancelada por el usuario, error 1"
         sleep 1
         exit 1
     else
@@ -32,7 +46,7 @@ else
             sleep 2
         else
             echo "Error en la instalación, intentalo de nuevo, error 2"
-            echo "ERROR: Error en la instalación, intentalo de nuevo, error 2" >$archivo
+            registro E "Error en la instalación, intentalo de nuevo, error 2"
             sleep 1
             exit 2
         fi
@@ -51,15 +65,3 @@ if [ $1 = ""]; then
     echo "ERROR: Es necesario poner una URL en el 1º parametro, error 3" >$archivo
     exit 3
 fi
-
-registro() {
-    if [ $1 = "I" ]; then
-        echo "INFO: $2"
-    else
-        if [ $1 = "E" ]; then
-            echo "ERROR: $2"
-        else
-            echo "ERROR desconocido"
-        fi
-    fi
-}
