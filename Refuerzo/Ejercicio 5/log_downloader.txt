@@ -1,6 +1,0 @@
-INFO (09/10/2026 11:39:14): Inicio
-INFO (09/10/2026 11:39:14): wget ya esta instalado
-INFO (09/10/2026 11:39:15): Se va a descargar la URL (https://www.mango11004.es/ruleta.html)
-INFO (09/10/2026 11:39:16): La URL (https://www.mango11004.es/ruleta.html) es valida
-INFO (09/10/2026 11:39:16): Todo correcto
-INFO (09/10/2026 11:39:16): Fin de ejecución

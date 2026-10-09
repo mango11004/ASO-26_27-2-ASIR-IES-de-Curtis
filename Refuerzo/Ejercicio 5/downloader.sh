@@ -86,48 +86,57 @@ wget -q -P "$directorio/downloader/descargas" "$1"
 
 case $? in
 0)
+    echo "Todo correcto"
     registro I "Todo correcto"
     registro I "Fin de ejecución"
-    return 0
+    exit 0
     ;;
 1)
+    echo "Fallo, comprueba el log"
     registro E "Error generico"
     registro I "Fin de ejecución"
-    return 1
+    exit 1
     ;;
 2)
+    echo "Fallo, comprueba el log"
     registro E "Error al interpretar las opciones de la línea de órdenes"
     registro I "Fin de ejecución"
-    return 2
+    exit 2
     ;;
 3)
+    echo "Fallo, comprueba el log"
     registro E "Error de entrada/salida de fichero (por ejemplo, no se puede escribir en el disco)"
     registro I "Fin de ejecución"
-    return 3
+    exit 3
     ;;
 4)
+    echo "Fallo, comprueba el log"
     registro E "Fallo de red (por ejemplo, el dominio no existe o no hay conexión)"
     registro I "Fin de ejecución"
-    return 4
+    exit 4
     ;;
 5)
+    echo "Fallo, comprueba el log"
     registro E "Fallo en la verificación SSL/TLS (certificado)"
     registro I "Fin de ejecución"
-    return 5
+    exit 5
     ;;
 6)
+    echo "Fallo, comprueba el log"
     registro E "Fallo de autenticación (usuario o contraseña)"
     registro I "Fin de ejecución"
-    return 6
+    exit 6
     ;;
 7)
+    echo "Fallo, comprueba el log"
     registro E "Error de protocolo"
     registro I "Fin de ejecución"
-    return 7
+    exit 7
     ;;
 8)
+    echo "Fallo, comprueba el log"
     registro E "El servidor ha respondido con un error (por ejemplo, 404, página no encontrada)"
     registro I "Fin de ejecución"
-    return 8
+    exit 8
     ;;
 esac
