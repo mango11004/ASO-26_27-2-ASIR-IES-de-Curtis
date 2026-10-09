@@ -57,11 +57,80 @@ clear
 
 echo "Los archivos descargados se almacenan en $directorio/downloader/descargas"
 sleep 1
-mkdir -r ~/downloader/descargas
-cd downloader/descargas
+ls downloader/descargas
+if [ $? = 0 ]; then
+    mkdir -p $directorio/downloader/descargas
+    cd $directorio/downloader/descargas
+else
+    cd $directorio/downloader/descargas
+fi
 
 if [ $1 = ""]; then
     echo "Es necesario poner una URL en el 1º parametro, error 3"
-    echo "ERROR: Es necesario poner una URL en el 1º parametro, error 3" >$archivo
+    registro E "Es necesario poner una URL en el 1º parametro, error 3"
     exit 3
 fi
+
+echo "Comprobando si la URL ($1) es valida"
+
+registro I "Se va a descargar la URL $1"
+
+wget --spider $1
+if [ $? = 0]; then
+    registro I "La URL ($1) es valida"
+    echo "La URL es valida"
+else
+    registro E "La URL ($2) no es valida, error 4"
+    echo "La URL no es valida"
+    exit 4
+fi
+
+wget -q -p $directorio/downloader/descargas $1
+
+case $? in
+0)
+    registro I "Todo correcto"
+    registro I "Fin de ejecución"
+    return 0
+    ;;
+1)
+    registro E "Error generico"
+    registro I "Fin de ejecución"
+    return 1
+    ;;
+2)
+    registro E "Error al interpretar las opciones de la línea de órdenes"
+    registro I "Fin de ejecución"
+    return 2
+    ;;
+3)
+    registro E "Error de entrada/salida de fichero (por ejemplo, no se puede escribir en el disco)"
+    registro I "Fin de ejecución"
+    return 3
+    ;;
+4)
+    registro E "Fallo de red (por ejemplo, el dominio no existe o no hay conexión)"
+    registro I "Fin de ejecución"
+    return 4
+    ;;
+5)
+    registro E "Fallo en la verificación SSL/TLS (certificado)"
+    registro I "Fin de ejecución"
+    return 5
+    ;;
+6)
+    registro E "Fallo de autenticación (usuario o contraseña)"
+    registro I "Fin de ejecución"
+    return 6
+    ;;
+7)
+    registro E "Error de protocolo"
+    registro I "Fin de ejecución"
+    return 7
+    ;;
+8)
+    registro E "El servidor ha respondido con un error (por ejemplo, 404, página no encontrada)"
+    registro I "Fin de ejecución"
+    return 8
+    ;;
+esac
