@@ -35,10 +35,10 @@ else
     sleep 1
     read -p "¿Lo instalamos? (S/N): " opcionapt
     if [ "$opcionapt" = "N" -o "$opcionapt" = "n" ]; then
-        echo "Operación cancelada por el usuario, error 1"
-        registro I "Operación cancelada por el usuario, error 1"
+        echo "Operación cancelada por el usuario, error 10"
+        registro I "Operación cancelada por el usuario, error 10"
         sleep 1
-        exit 1
+        exit 10
     else
         sudo apt update && sudo apt install wget
         wget --version >/dev/null 2>&1
@@ -46,10 +46,10 @@ else
             echo "Instalado correctamente"
             sleep 2
         else
-            echo "Error en la instalación, intentalo de nuevo, error 2"
-            registro E "Error en la instalación, intentalo de nuevo, error 2"
+            echo "Error en la instalación, intentalo de nuevo, error 12"
+            registro E "Error en la instalación, intentalo de nuevo, error 12"
             sleep 1
-            exit 2
+            exit 12
         fi
     fi
 fi
@@ -63,9 +63,9 @@ mkdir -p "$directorio/downloader/descargas"
 cd "$directorio/downloader/descargas"
 
 if [ "$1" = "" ]; then
-    echo "Es necesario poner una URL en el 1º parametro, error 3"
-    registro E "Es necesario poner una URL en el 1º parametro, error 3"
-    exit 3
+    echo "Es necesario poner una URL en el 1º parametro, error 13"
+    registro E "Es necesario poner una URL en el 1º parametro, error 13"
+    exit 13
 fi
 
 echo "Comprobando si la URL ($1) es valida"
@@ -77,9 +77,9 @@ if [ $? = 0 ]; then
     registro I "La URL ($1) es valida"
     echo "La URL es valida"
 else
-    registro E "La URL ($2) no es valida, error 4"
+    registro E "La URL ($2) no es valida, error 14"
     echo "La URL no es valida"
-    exit 4
+    exit 14
 fi
 
 wget -q -P "$directorio/downloader/descargas" "$1"
