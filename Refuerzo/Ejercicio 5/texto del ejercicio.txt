@@ -1,0 +1,151 @@
+IMPORTANTE: 
+
+En esta tarea vamos a trabajar:
+
+    Usar wget desde un script: descargar, elegir nombre y carpeta, comprobar si una URL existe y saber si la descarga ha ido bien.
+    Escribir los eventos importantes en un fichero de texto (log), con fecha y hora.
+
+Al terminar tendrás un script downloader.sh que descarga una URL que le pases y deja constancia en log de qué ha pasado.
+
+PREPARACIÓN: 
+
+En Debian no está habilitado por defecto el fichero /var/log/auth.log, así que activaremos un fichero de registro propio para sudo.
+
+    Comprueba que wget está instalado: wget --version.
+    Crea la carpeta de trabajo y entra en ella: 
+     mkdir -p ~/downloader/descargas
+     cd ~/downloader
+
+    Comprueba que tienes conexión: wget -q --spider https://example.com; echo $? (debe mostrar 0).
+
+Conociendo wget:
+
+wget es un programa de la terminal que descarga ficheros de Internet usando los protocolos HTTP, HTTPS y FTP. Funciona sin interfaz gráfica y sin pedir confirmaciones, por eso es muy útil dentro de scripts: se puede lanzar, esperar a que termine y comprobar si ha ido bien.
+
+Su forma general de uso es: wget [opciones] URL
+
+Si no se indica ninguna opción, wget descarga el contenido de la URL, lo guarda en la carpeta actual y va mostrando por pantalla información sobre la conexión y el progreso de la descarga.
+
+Opciones que vamos a usar
+
+Opción
+	
+
+Para qué sirve
+
+-q
+	
+
+Modo silencioso: no muestra mensajes por pantalla
+
+-O fichero
+	
+
+Guarda la descarga con el nombre indicado; con -O- la envía a la salida estándar en lugar de a un fichero
+
+-P carpeta
+	
+
+Indica la carpeta donde se guardan las descargas
+
+--spider
+	
+
+Comprueba si la URL existe sin descargar su contenido
+
+
+Ejecuta cada orden a mano en la terminal y anota en un documento qué ha ocurrido.
+1. wget https://example.com → ¿Qué fichero se ha creado? ¿Cómo se llama? ¿Qué información muestra wget mientras descarga?
+2. Repite la orden. ¿Qué ocurre con el nombre del fichero? (fíjate bien).
+3. wget -q https://example.com → ¿Qué cambia respecto a antes?
+4. wget -O pagina.html https://example.com → ¿Qué efecto tiene -O?
+5. wget -P descargas https://example.com → ¿Dónde se guarda ahora el fichero?
+6. wget -qO- https://example.com | head -n 5 → ¿Qué hace -O-? ¿Por qué no se crea ningún fichero?
+7. wget --spider https://example.com → ¿Descarga algo? ¿Qué informa?
+Para terminar, borra los ficheros que hayan quedado sueltos en ~/practica_wget (no los de descargas/).
+
+wget indica cuál ha sido el resultado de su trabajo con un número, llamado código de salida, que se guarda en la variable especial $? justo cuando el programa termina. Por convención, 0 significa que todo ha ido bien y cualquier otro valor indica algún tipo de problema.
+
+Estos son los códigos de salida de wget:
+
+Código
+	
+
+Significado
+
+0
+	
+
+No ha habido ningún problema
+
+1
+	
+
+Error genérico
+
+2
+	
+
+Error al interpretar las opciones de la línea de órdenes
+
+3
+	
+
+Error de entrada/salida de fichero (por ejemplo, no se puede escribir en el disco)
+
+4
+	
+
+Fallo de red (por ejemplo, el dominio no existe o no hay conexión)
+
+5
+	
+
+Fallo en la verificación SSL/TLS (certificado)
+
+6
+	
+
+Fallo de autenticación (usuario o contraseña)
+
+7
+	
+
+Error de protocolo
+
+8
+	
+
+El servidor ha respondido con un error (por ejemplo, 404, página no encontrada)
+
+
+Los más habituales en esta práctica son el 0 (todo correcto), el 4 (falla la red o el dominio) y el 8 (el servidor responde, pero la página no existe).
+
+CREACIÓN DEL SCRIPT :
+
+Crea un script Bash llamado downloader.sh que reciba la web de descarga por parámetro, realice la descarga y guarde la información en el log. Debe cumplir estos requisitos:
+
+    Cabecera con tu nombre, la fecha y una breve descripción.
+
+    Variables al principio para la carpeta de descargas (~/downloader/descargas) y el fichero de log (~/downloader/downloader.log). 
+
+    Fichero de log único, se crea con la primera ejecución del script. Dentro del script debe haber una función registrar que reciba dos parámetros, el nivel (toma valores INFO o ERROR) y el mensaje, y añada la línea al fichero de log con fecha y hora. Ejemplo: ERROR
+
+    Comprobación de parámetros: el script recibe la URL como primer parámetro ($1). Si no se pasa ninguna, muestra un mensaje por pantalla y anota un mensaje de tipo ERROR en el log.
+
+    Registro del inicio: anota un INFO con la URL que se va a descargar.
+
+    Descarga con wget en modo silencioso y guardando en la carpeta de descargas.
+
+    Comprobación del resultado con $? y if: ◦ Si todo va bien, muestra un mensaje por pantalla y anota un mensaje de tipo INFO en el log.    ◦ Si falla, muestra un mensaje por pantalla y anota un mensaje de tipo ERROR en el log que incluya el código de salida de wget.
+
+    Registro del final: anota siempre un INFO de fin de ejecución.
+
+    El script devuelve el mismo código de salida que haya devuelto wget (exit).
+
+VALIDACIÓN DEL FUNCIONAMIENTO:
+
+Ejecuta el script con estas tres entradas y comprueba el fichero de log: 
+./downloader.sh https://example.com 
+./downloader.sh https://example.com/no-existe.html 
+./downloader.sh
