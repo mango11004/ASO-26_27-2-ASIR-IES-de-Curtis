@@ -32,6 +32,7 @@ else
             sleep 2
         else
             echo "Error en la instalación, intentalo de nuevo, error 2"
+            echo "ERROR: Error en la instalación, intentalo de nuevo, error 2" >$archivo
             sleep 1
             exit 2
         fi
@@ -44,3 +45,21 @@ echo "Los archivos descargados se almacenan en $directorio/downloader/descargas"
 sleep 1
 mkdir -r ~/downloader/descargas
 cd downloader/descargas
+
+if [ $1 = ""]; then
+    echo "Es necesario poner una URL en el 1º parametro, error 3"
+    echo "ERROR: Es necesario poner una URL en el 1º parametro, error 3" >$archivo
+    exit 3
+fi
+
+registro() {
+    if [ $1 = "I" ]; then
+        echo "INFO: $2"
+    else
+        if [ $1 = "E" ]; then
+            echo "ERROR: $2"
+        else
+            echo "ERROR desconocido"
+        fi
+    fi
+}
