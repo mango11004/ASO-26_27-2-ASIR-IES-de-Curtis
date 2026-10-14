@@ -77,7 +77,7 @@ if [ $? = 0 ]; then
     registro I "La URL ($1) es valida"
     echo "La URL es valida"
 else
-    registro E "La URL ($2) no es valida, error 14"
+    registro E "La URL ($1) no es valida, error 14"
     echo "La URL no es valida"
     exit 14
 fi
