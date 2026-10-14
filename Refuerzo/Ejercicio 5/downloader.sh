@@ -35,10 +35,10 @@ else
     sleep 1
     read -p "¿Lo instalamos? (S/N): " opcionapt
     if [ "$opcionapt" = "N" -o "$opcionapt" = "n" ]; then
-        echo "Operación cancelada por el usuario, error 1"
-        registro I "Operación cancelada por el usuario, error 1"
+        echo "Operación cancelada por el usuario, error 10"
+        registro I "Operación cancelada por el usuario, error 10"
         sleep 1
-        exit 1
+        exit 10
     else
         sudo apt update && sudo apt install wget
         wget --version >/dev/null 2>&1
@@ -46,10 +46,10 @@ else
             echo "Instalado correctamente"
             sleep 2
         else
-            echo "Error en la instalación, intentalo de nuevo, error 2"
-            registro E "Error en la instalación, intentalo de nuevo, error 2"
+            echo "Error en la instalación, intentalo de nuevo, error 12"
+            registro E "Error en la instalación, intentalo de nuevo, error 12"
             sleep 1
-            exit 2
+            exit 12
         fi
     fi
 fi
@@ -63,9 +63,9 @@ mkdir -p "$directorio/downloader/descargas"
 cd "$directorio/downloader/descargas"
 
 if [ "$1" = "" ]; then
-    echo "Es necesario poner una URL en el 1º parametro, error 3"
-    registro E "Es necesario poner una URL en el 1º parametro, error 3"
-    exit 3
+    echo "Es necesario poner una URL en el 1º parametro, error 13"
+    registro E "Es necesario poner una URL en el 1º parametro, error 13"
+    exit 13
 fi
 
 echo "Comprobando si la URL ($1) es valida"
@@ -77,57 +77,66 @@ if [ $? = 0 ]; then
     registro I "La URL ($1) es valida"
     echo "La URL es valida"
 else
-    registro E "La URL ($2) no es valida, error 4"
+    registro E "La URL ($1) no es valida, error 14"
     echo "La URL no es valida"
-    exit 4
+    exit 14
 fi
 
 wget -q -P "$directorio/downloader/descargas" "$1"
 
 case $? in
 0)
+    echo "Todo correcto"
     registro I "Todo correcto"
     registro I "Fin de ejecución"
-    return 0
+    exit 0
     ;;
 1)
+    echo "Fallo, comprueba el log"
     registro E "Error generico"
     registro I "Fin de ejecución"
-    return 1
+    exit 1
     ;;
 2)
+    echo "Fallo, comprueba el log"
     registro E "Error al interpretar las opciones de la línea de órdenes"
     registro I "Fin de ejecución"
-    return 2
+    exit 2
     ;;
 3)
+    echo "Fallo, comprueba el log"
     registro E "Error de entrada/salida de fichero (por ejemplo, no se puede escribir en el disco)"
     registro I "Fin de ejecución"
-    return 3
+    exit 3
     ;;
 4)
+    echo "Fallo, comprueba el log"
     registro E "Fallo de red (por ejemplo, el dominio no existe o no hay conexión)"
     registro I "Fin de ejecución"
-    return 4
+    exit 4
     ;;
 5)
+    echo "Fallo, comprueba el log"
     registro E "Fallo en la verificación SSL/TLS (certificado)"
     registro I "Fin de ejecución"
-    return 5
+    exit 5
     ;;
 6)
+    echo "Fallo, comprueba el log"
     registro E "Fallo de autenticación (usuario o contraseña)"
     registro I "Fin de ejecución"
-    return 6
+    exit 6
     ;;
 7)
+    echo "Fallo, comprueba el log"
     registro E "Error de protocolo"
     registro I "Fin de ejecución"
-    return 7
+    exit 7
     ;;
 8)
+    echo "Fallo, comprueba el log"
     registro E "El servidor ha respondido con un error (por ejemplo, 404, página no encontrada)"
     registro I "Fin de ejecución"
-    return 8
+    exit 8
     ;;
 esac

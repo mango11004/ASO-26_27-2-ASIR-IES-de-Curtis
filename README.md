@@ -6,15 +6,13 @@ Este proyecto sirve como cuaderno de trabajo donde se van recopilando prácticas
 
 ## 📚 Contenido del repositorio
 
-La estructura del repositorio está organizada por bloques temáticos:
+La estructura del repositorio ha cambiado. Actualmente las carpetas principales en la raíz son:
 
-- `Ejercicio 2` — ejercicios prácticos del segundo bloque.
-- `Ejercicio 3` — actividades y material del tercer ejercicio.
-- `Tarea 1` — primera tarea de la asignatura.
-- `Tarea 2` — segunda tarea de la asignatura.
-- `Tarea 3` — tercera tarea de la asignatura.
-- `Tarea 04` — entrega adicional / tarea 4.
 - `Otros` — recursos, apuntes o archivos complementarios.
+- `Refuerzo` — material adicional y ejercicios de refuerzo.
+- `Tareas Entregables` — entregas oficiales, tareas y ejercicios entregados.
+
+Navega por cada una para ver su contenido actualizado.
 
 ## 🎯 Objetivo
 
