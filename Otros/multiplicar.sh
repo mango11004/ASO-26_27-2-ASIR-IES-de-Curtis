@@ -1,6 +1,6 @@
 #!/bin/bash
 # Multiplicar 2 números
-# Crear funcion multiplicar que acepta 2 numeros
+# Crear funcion multiplicar que acepta 2 numeros y los multiplica
 # Manuel González López
 # Data: 15-10-2026
 
