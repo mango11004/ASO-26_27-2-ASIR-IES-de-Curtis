@@ -1,6 +1,6 @@
 #!/bin/bash
 # Multiplicar 2 números
-# script con una función a la que se le pasa el nombre de usuario y devuelve 1 si existe y 0 si no existe (return).
+# Script con una función a la que se le pasa el nombre de usuario y devuelve 1 si existe y 0 si no existe (return).
 # Manuel González López
 # Data: 15-10-2026
 
