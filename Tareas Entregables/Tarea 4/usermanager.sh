@@ -23,7 +23,7 @@ creargrupo() { #Funcion para comprobar si el grupo existe y crearlo en caso de q
     fi
 }
 
-crearuser() { #Funcion para comprobar si existe el usuario y la crearlo en caso de que no exista
+crearuser() { #Funcion para comprobar si existe el usuario y crearlo en caso de que no exista
     creargrupo
     echo -e "\nCreando usuario $nombreuser"
     sleep 1
