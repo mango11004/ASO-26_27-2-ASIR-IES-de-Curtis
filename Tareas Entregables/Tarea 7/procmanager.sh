@@ -3,6 +3,71 @@
 # Manuel González López
 # Data: 23-10-2026
 
+menu1() {
+    ps aux | less
+    read -p "¿Desas salir? (S/N): " salida
+    if [ "$salida" = "s" -o "$salida" = "S" ]; then
+        exit 0
+    else
+        clear
+        continue
+    fi
+}
+
+menu2() {
+    read -p "Dame el nombre de usuario: " usuario
+    id $usuario >/dev/null 2>&1
+    if [ $? = 0 ]; then
+        echo "El usuario existe"
+        ps -u $usuario | less
+        read -p "¿Desas salir? (S/N): " salida
+        if [ "$salida" = "s" -o "$salida" = "S" ]; then
+            exit 0
+        else
+            clear
+            continue
+        fi
+    else
+        echo "El usuario no existe, error 1, volviendo al menu principal"
+        sleep 3
+        clear
+        continue
+    fi
+}
+
+menu3() {
+    read -p "Dame el nombre de usuario: " usuario
+    fecharchivo=$(date -d now +%Y%m%d%H%M)
+    mkdir $HOME/informes
+    if [ $? = 0]; then
+    else
+        echo "Error al crear la carpeta de informes, error 4"
+        exit 4
+    fi
+    archivo="$HOME/informes""/$fecharchivo""_procesos_"$usuario".txt"
+    id $usuario >/dev/null 2>&1
+    if [ $? = 0 ]; then
+        echo "El usuario existe, creando informe"
+        echo "Inicio: $fecha $hora
+        Nombre del equipo: $HOSTNAME
+        Usuario: $USER" >$archivo
+        ps -u $usuario -o pid,user,%cpu,%mem,start,command >>$archivo
+        echo "El informe se encuentra en $archivo"
+    else
+        echo "El usuario no existe, error 1, volviendo al menu principal"
+        sleep 3
+        clear
+        continue
+    fi
+    read -p "¿Desas salir? (S/N): " salida
+    if [ "$salida" = "s" -o "$salida" = "S" ]; then
+        exit 0
+    else
+        clear
+        continue
+    fi
+}
+
 while true; do
     clear
     read -p "[1] Ver todos los procesos del sistema.
@@ -14,39 +79,15 @@ Escoge una opción: " menu
     case $menu in
     1)
         clear
-        ps au -u $USER | less
-        read -p "¿Desas salir? (S/N): " salida
-        if [ "$salida" = "s" -o "$salida" = "S" ]; then
-            exit 0
-        else
-            clear
-            continue
-        fi
+        menu1
         ;;
     2)
         clear
-        read -p "Dame el nombre de usuario: " usuario
-        id $usuario >/dev/null 2>&1
-        if [ $? = 0 ]; then
-            echo "El usuario existe"
-            ps -u $usuario | less
-            read -p "¿Desas salir? (S/N): " salida
-            if [ "$salida" = "s" -o "$salida" = "S" ]; then
-                exit 0
-            else
-                clear
-                continue
-            fi
-        else
-            echo "El usuario no existe, volviendo al menu principal"
-            sleep 3
-            clear
-            continue
-        fi
+        menu2
         ;;
     3)
-        
         clear
+        menu3
         ;;
     4)
         clear
@@ -54,7 +95,7 @@ Escoge una opción: " menu
         exit 0
         ;;
     *)
-        echo "Error, modo de operacion desconocido"
+        echo "Error 3, modo de operacion desconocido"
         sleep 3
         continue
         ;;
