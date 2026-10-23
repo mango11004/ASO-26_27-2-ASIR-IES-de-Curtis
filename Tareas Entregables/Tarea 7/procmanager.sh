@@ -3,6 +3,19 @@
 # Manuel González López
 # Data: 23-10-2026
 
+comprobarusuario() {
+    read -p "Dame el nombre de usuario: " usuario
+    id $usuario >/dev/null 2>&1
+    if [ $? = 0 ]; then
+        echo "El usuario existe"
+    else
+        echo "El usuario no existe, error 1, volviendo al menu principal"
+        sleep 3
+        clear
+        continue
+    fi
+}
+
 menu1() {
     ps aux | less
     read -p "¿Desas salir? (S/N): " salida
@@ -15,11 +28,10 @@ menu1() {
 }
 
 menu2() {
-    read -p "Dame el nombre de usuario: " usuario
-    id $usuario >/dev/null 2>&1
+    comprobarusuario
     if [ $? = 0 ]; then
-        echo "El usuario existe"
         ps -u $usuario | less
+    else
         read -p "¿Desas salir? (S/N): " salida
         if [ "$salida" = "s" -o "$salida" = "S" ]; then
             exit 0
@@ -27,7 +39,7 @@ menu2() {
             clear
             continue
         fi
-    else
+        else
         echo "El usuario no existe, error 1, volviendo al menu principal"
         sleep 3
         clear
@@ -36,7 +48,7 @@ menu2() {
 }
 
 menu3() {
-    read -p "Dame el nombre de usuario: " usuario
+    comprobarusuario
     fecharchivo=$(date -d now +%Y%m%d%H%M)
     mkdir $HOME/informes
     if [ $? = 0]; then
@@ -45,20 +57,12 @@ menu3() {
         exit 4
     fi
     archivo="$HOME/informes""/$fecharchivo""_procesos_"$usuario".txt"
-    id $usuario >/dev/null 2>&1
-    if [ $? = 0 ]; then
-        echo "El usuario existe, creando informe"
-        echo "Inicio: $fecha $hora
+    echo "El usuario existe, creando informe"
+    echo "Inicio: $fecha $hora
         Nombre del equipo: $HOSTNAME
         Usuario: $USER" >$archivo
-        ps -u $usuario -o pid,user,%cpu,%mem,start,command >>$archivo
-        echo "El informe se encuentra en $archivo"
-    else
-        echo "El usuario no existe, error 1, volviendo al menu principal"
-        sleep 3
-        clear
-        continue
-    fi
+    ps -u $usuario -o pid,user,%cpu,%mem,start,command >>$archivo
+    echo "El informe se encuentra en $archivo"
     read -p "¿Desas salir? (S/N): " salida
     if [ "$salida" = "s" -o "$salida" = "S" ]; then
         exit 0
