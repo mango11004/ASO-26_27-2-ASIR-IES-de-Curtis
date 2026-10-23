@@ -29,19 +29,11 @@ menu1() {
 
 menu2() {
     comprobarusuario
-    if [ $? = 0 ]; then
-        ps -u $usuario | less
+    ps -u $usuario | less
+    read -p "¿Desas salir? (S/N): " salida
+    if [ "$salida" = "s" -o "$salida" = "S" ]; then
+        exit 0
     else
-        read -p "¿Desas salir? (S/N): " salida
-        if [ "$salida" = "s" -o "$salida" = "S" ]; then
-            exit 0
-        else
-            clear
-            continue
-        fi
-        else
-        echo "El usuario no existe, error 1, volviendo al menu principal"
-        sleep 3
         clear
         continue
     fi
@@ -50,11 +42,17 @@ menu2() {
 menu3() {
     comprobarusuario
     fecharchivo=$(date -d now +%Y%m%d%H%M)
-    mkdir $HOME/informes
-    if [ $? = 0]; then
+    if [ ! -f "$HOME/informes" ]; then
+        mkdir $HOME/informes
+        if [ $? = 0]; then
+            echo "Carpeta creada correctamente"
+        else
+            echo "Error al crear la carpeta de informes, error 4"
+            exit 4
+        fi
     else
-        echo "Error al crear la carpeta de informes, error 4"
-        exit 4
+        echo "La carpeta $HOME/informes ya existe"
+
     fi
     archivo="$HOME/informes""/$fecharchivo""_procesos_"$usuario".txt"
     echo "El usuario existe, creando informe"
