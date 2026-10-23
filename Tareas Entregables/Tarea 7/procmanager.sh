@@ -45,6 +45,7 @@ Escoge una opción: " menu
         fi
         ;;
     3)
+        
         clear
         ;;
     4)
