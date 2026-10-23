@@ -42,9 +42,9 @@ menu2() {
 menu3() {
     comprobarusuario
     fecharchivo=$(date -d now +%Y%m%d%H%M)
-    if [ ! -f "$HOME/informes" ]; then
-        mkdir $HOME/informes
-        if [ $? = 0]; then
+    if [ -f "$HOME/informes" ]; then
+        mkdir "$HOME/informes"
+        if [ $? = 0 ]; then
             echo "Carpeta creada correctamente"
         else
             echo "Error al crear la carpeta de informes, error 4"
