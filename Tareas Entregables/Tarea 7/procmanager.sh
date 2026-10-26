@@ -4,6 +4,7 @@
 # Data: 23-10-2026
 
 salir() {
+    clear
     read -p "¿Desas salir? (S/N): " salida
     if [ "$salida" = "s" -o "$salida" = "S" ]; then
         exit 0
@@ -96,9 +97,66 @@ menu6() {
 }
 
 menu7() {
-    echo
-}
+    read -p "Cambiar la prioridad de un proceso que ya existe (1) o iniciar uno nuevo con la prioridad que quieras (2): " niceorreniceopcion
+    case $niceorreniceopcion in
+    1)
+        clear
+        read -p "¿A que proceso le cambiamos la prioridad?
+        
+        Escribe aqui: " procesoprio
+        ps -p $procesoprio >/dev/null 2>&1
+        if [ ! $? = 0 ]; then
+            clear
+            echo "El Proceso especificado no existe"
+            sleep 1
+            salir
+        else
+            echo "Actualmente ese proceso tiene prioridad$(ps -p $procesoprio -o nice --no-headers)"
+            read -p "¿A cuanto le ponemos la prioridad?
+        
+        Escribe aqui: " prioridadpro
+            renice $prioridadpro -p $procesoprio >/dev/null 2>&1
+            if [ $? = 0 ]; then
+                echo "Prioridad cambiada correctamente"
+                sleep 3
+                salir
+            else
+                read -p "No se pudo cambiar la prioridad.
 
+                ¿Quieres volver a intentarlo con sudo? (S/N): " sudopri
+                if [ "$sudopri" = "s" -o "$sudopri" = "S" ]; then
+                    sudo renice $prioridadpro -p $procesoprio >/dev/null 2>&1
+                    if [ $? = 0 ]; then
+                        echo "Prioridad cambiada correctamente"
+                        sleep 3
+                        salir
+                    else
+                        echo "Error al cambiar la prioridad"
+                        salir
+                    fi
+                else
+                    echo "No se reintenta con sudo"
+                    salir
+                fi
+            fi
+        fi
+        ;;
+    2)
+        read -p "¿Que proceso iniciamos?
+        
+        Escribe aqui: " procesoprio
+        read -p "¿A cuanto le ponemos la prioridad?
+        
+        Escribe aqui: " prioridadpro
+        nice -n $prioridadpro $procesoprio
+        if [ $? = 0]; then
+            echo "Creado correctamente el proceso"
+        else
+            echo "No se pudo crear el proceso, no se encuentra el proceso a inciar o no tienes permisos"
+        fi
+        ;;
+    esac
+}
 while true; do
     clear
     read -p "[1] Ver todos los procesos del sistema.
