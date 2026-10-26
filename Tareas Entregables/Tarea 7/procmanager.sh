@@ -3,6 +3,16 @@
 # Manuel González López
 # Data: 23-10-2026
 
+salir() {
+    read -p "¿Desas salir? (S/N): " salida
+    if [ "$salida" = "s" -o "$salida" = "S" ]; then
+        exit 0
+    else
+        clear
+        continue
+    fi
+}
+
 comprobarusuario() {
     read -p "Dame el nombre de usuario: " usuario
     id $usuario >/dev/null 2>&1
@@ -18,25 +28,13 @@ comprobarusuario() {
 
 menu1() {
     ps aux | less
-    read -p "¿Desas salir? (S/N): " salida
-    if [ "$salida" = "s" -o "$salida" = "S" ]; then
-        exit 0
-    else
-        clear
-        continue
-    fi
+    salir
 }
 
 menu2() {
     comprobarusuario
     ps -u $usuario | less
-    read -p "¿Desas salir? (S/N): " salida
-    if [ "$salida" = "s" -o "$salida" = "S" ]; then
-        exit 0
-    else
-        clear
-        continue
-    fi
+    salir
 }
 
 menu3() {
@@ -61,13 +59,44 @@ menu3() {
         Usuario: $USER" >$archivo
     ps -u $usuario -o pid,user,%cpu,%mem,start,command >>$archivo
     echo "El informe se encuentra en $archivo"
-    read -p "¿Desas salir? (S/N): " salida
-    if [ "$salida" = "s" -o "$salida" = "S" ]; then
-        exit 0
+    salir
+}
+
+menu4() {
+    ps x --sort=-pcpu -o pid,user,%cpu --no-headers | head | less
+    salir
+}
+
+menu5() {
+    read -p "Dime el nombre del proceso a buscar: " procesonombre
+    ps x -o pid,user,command | grep $procesonombre | less
+    #ps x -o pid,user,command -C $procesonombre | less      # Otra forma de hacerlo
+    salir
+}
+
+menu6() {
+    read -p "Dime el PID del proceso a matar: " matarproceso
+    ps -p $matarproceso >/dev/null 2>&1
+    if [ ! $? = 0 ]; then
+        echo "El Proceso especificado no existe"
+        sleep 1
+        salir
     else
-        clear
-        continue
+        kill $matarproceso >/dev/null 2>&1
+        if [ $? = 0 ]; then
+            echo "El proceso se cerro correctamente"
+            sleep 1
+            salir
+        else
+            echo "Error cerrando el proceso"
+            sleep 1
+            salir
+        fi
     fi
+}
+
+menu7() {
+    echo
 }
 
 while true; do
@@ -75,7 +104,11 @@ while true; do
     read -p "[1] Ver todos los procesos del sistema.
 [2] Ver procesos de un usuario.
 [3] Generar informe de procesos en ejecución.
-[4] Salir
+[4] Mostrar los 10 procesos que más CPU consumen.
+[5] Buscar información de un proceso por nombre.
+[6] Terminar un proceso.
+[7] Cambiar la prioridad de un proceso.
+[8] Salir
 
 Escoge una opción: " menu
     case $menu in
@@ -93,12 +126,28 @@ Escoge una opción: " menu
         ;;
     4)
         clear
+        menu4
+        ;;
+    5)
+        clear
+        menu5
+        ;;
+    6)
+        clear
+        menu6
+        ;;
+    7)
+        clear
+        menu7
+        ;;
+    8)
+        clear
         echo "Saliendo del script"
         exit 0
         ;;
     *)
         echo "Error 3, modo de operacion desconocido"
-        sleep 3
+        sleep 1
         continue
         ;;
     esac
