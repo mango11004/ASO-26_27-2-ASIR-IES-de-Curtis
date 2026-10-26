@@ -121,7 +121,7 @@ menu7() {
                 sleep 3
                 salir
             else
-                read -p "No se pudo cambiar la prioridad.
+                read -p "Error, no se pudo cambiar la prioridad.
 
                 ¿Quieres volver a intentarlo con sudo? (S/N): " sudopri
                 if [ "$sudopri" = "s" -o "$sudopri" = "S" ]; then
@@ -145,14 +145,25 @@ menu7() {
         read -p "¿Que proceso iniciamos?
         
         Escribe aqui: " procesoprio
-        read -p "¿A cuanto le ponemos la prioridad?
+        which $procesoprio >/dev/null 2>&1
+        if [ ! $? = 0 ]; then
+            echo "Error, el proceso especificado no existe"
+            sleep 3
+            salir
+        else
+            read -p "¿A cuanto le ponemos la prioridad?
         
         Escribe aqui: " prioridadpro
-        nice -n $prioridadpro $procesoprio
-        if [ $? = 0]; then
-            echo "Creado correctamente el proceso"
-        else
-            echo "No se pudo crear el proceso, no se encuentra el proceso a inciar o no tienes permisos"
+            nice -n $prioridadpro $procesoprio >/dev/null 2>&1
+            if [ $? = 0]; then
+                echo "Creado correctamente el proceso"
+                sleep 3
+                salir
+            else
+                echo "Error, no se pudo crear el proceso, no se encuentra el proceso a inciar o no tienes permisos"
+                sleep 3
+                salir
+            fi
         fi
         ;;
     esac
