@@ -42,7 +42,7 @@ menu2() {
 menu3() {
     comprobarusuario
     fecharchivo=$(date -d now +%Y%m%d%H%M)
-    if [ -f "$HOME/informes" ]; then
+    if [ ! -d "$HOME/informes" ]; then
         mkdir "$HOME/informes"
         if [ $? = 0 ]; then
             echo "Carpeta creada correctamente"
