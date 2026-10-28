@@ -132,7 +132,7 @@ menu7() { # Cambiar prioridad con procesos o iniciar procesos nuevos con priorid
                 if [ "$sudopri" = "s" -o "$sudopri" = "S" ]; then
                     sudo renice $prioridadpro -p $procesoprio >/dev/null 2>&1
                     if [ $? = 0 ]; then
-                        echo "Prioridad cambiada correctamente"
+                        echo "Prioridad cambiada correctamente a$(ps -p $procesoprio -o nice --no-headers)"
                         sleep 3
                         salir
                     else
