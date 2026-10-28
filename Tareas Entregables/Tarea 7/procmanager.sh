@@ -106,7 +106,7 @@ menu7() { # Cambiar prioridad con procesos o iniciar procesos nuevos con priorid
     # Con esta se cambia prioridad a proceso existente
     1)
         clear
-        read -p "¿A que proceso le cambiamos la prioridad?
+        read -p "¿A que proceso (PID) le cambiamos la prioridad?
         
         Escribe aqui: " procesoprio
         ps -p $procesoprio >/dev/null 2>&1 # Comprobamos que el proceso exista
