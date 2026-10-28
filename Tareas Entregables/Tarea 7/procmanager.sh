@@ -160,15 +160,45 @@ menu7() { # Cambiar prioridad con procesos o iniciar procesos nuevos con priorid
             read -p "¿A cuanto le ponemos la prioridad?
         
         Escribe aqui: " prioridadpro
-            nice -n $prioridadpro $procesoprio >/dev/null 2>&1
-            if [ $? = 0]; then
-                echo "Creado correctamente el proceso"
+            nice -n $prioridadpro $procesoprio >/dev/null 2>&1 &
+            pidproceso=$!
+            if [ $? = 0 ]; then
+                clear
+                echo "Creado correctamente el proceso con pid $pidproceso"
                 sleep 3
-                salir
+                read -p "¿Desas salir? (S/N): " salida
+                if [ "$salida" = "s" -o "$salida" = "S" ]; then
+                    exit 0
+                else
+                    clear
+                    continue
+                fi
             else
-                echo "Error, no se pudo crear el proceso, no se encuentra el proceso a inciar o no tienes permisos"
-                sleep 3
-                salir
+                read -p "Error, no se pudo crear el proceso.
+
+                ¿Quieres volver a intentarlo con sudo? (S/N): " sudopri # Si no funciona se da la opcion de probar usando sudo
+                if [ "$sudopri" = "s" -o "$sudopri" = "S" ]; then
+                    sudo nice -n $prioridadpro $procesoprio >/dev/null 2>&1 &
+                    pidproceso=$(echo $!)
+                    if [ $? = 0 ]; then
+                        clear
+                        echo "Creado correctamente el proceso con pid $pidproceso"
+                        sleep 3
+                        read -p "¿Desas salir? (S/N): " salida
+                        if [ "$salida" = "s" -o "$salida" = "S" ]; then
+                            exit 0
+                        else
+                            clear
+                            continue
+                        fi
+                    else
+                        echo "Error al crear el proceso"
+                        salir
+                    fi
+                else
+                    echo "No se reintenta con sudo"
+                    salir
+                fi
             fi
         fi
         ;;
