@@ -3,6 +3,26 @@
 # Manuel González López
 # Data: 23-10-2026
 
+killproceso() {
+    ps -p $matarproceso >/dev/null 2>&1
+    if [ ! $? = 0 ]; then
+        echo "El Proceso especificado no existe"
+        sleep 1
+        salir
+    else
+        kill $matarproceso >/dev/null 2>&1
+        if [ $? = 0 ]; then
+            echo "El proceso se cerro correctamente"
+            sleep 1
+            salir
+        else
+            echo "Error cerrando el proceso"
+            sleep 1
+            salir
+        fi
+    fi
+}
+
 salir() {
     clear
     read -p "¿Desas salir? (S/N): " salida
@@ -77,23 +97,7 @@ menu5() {
 
 menu6() {
     read -p "Dime el PID del proceso a matar: " matarproceso
-    ps -p $matarproceso >/dev/null 2>&1
-    if [ ! $? = 0 ]; then
-        echo "El Proceso especificado no existe"
-        sleep 1
-        salir
-    else
-        kill $matarproceso >/dev/null 2>&1
-        if [ $? = 0 ]; then
-            echo "El proceso se cerro correctamente"
-            sleep 1
-            salir
-        else
-            echo "Error cerrando el proceso"
-            sleep 1
-            salir
-        fi
-    fi
+    killproceso
 }
 
 menu7() {
