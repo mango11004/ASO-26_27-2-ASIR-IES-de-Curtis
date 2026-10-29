@@ -179,7 +179,7 @@ menu7() { # Cambiar prioridad con procesos o iniciar procesos nuevos con priorid
                 ¿Quieres volver a intentarlo con sudo? (S/N): " sudopri # Si no funciona se da la opcion de probar usando sudo
                 if [ "$sudopri" = "s" -o "$sudopri" = "S" ]; then
                     sudo nice -n $prioridadpro $procesoprio >/dev/null 2>&1 &
-                    pidproceso=$(echo $!)
+                    pidproceso=$!
                     if [ $? = 0 ]; then
                         clear
                         echo "Creado correctamente el proceso con pid $pidproceso"
