@@ -66,4 +66,4 @@ while [ "$opcion" != "4" ]; do
 done
 
 echo "Programa finalizado."
-exit 0
+exit 0 # Cambiar codigo de salida de 5 a 0
