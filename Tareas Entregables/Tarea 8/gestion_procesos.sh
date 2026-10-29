@@ -2,17 +2,17 @@
 # Variables globales
 
 # opcion=0 Estas variables sobran
-#pid=""
+# pid=""
 
 mostrar_procesos() {
     echo "Procesos en ejecución:"
-    ps -o pid,ni,comm --sort=pid | less #Sobra una e y falta un less
+    ps -eo pid,ni,comm --sort=pid | less # Falta un less para poder leer la salida del comando
 }
 
 consultar_proceso() {
-    echo "Consultando el proceso con PID $pid"
-    ps -p $pid -o pid,ni,stat,comm
-    exit
+    echo "Consultando el proceso con PID $pid" # Cambiar el 1 por pid
+    ps -p $pid -o pid,ni,stat,comm | less      # Cambiar el 1 por pid
+    #exit # Sobra el exit
 }
 
 cambiar_prioridad() {
@@ -21,7 +21,8 @@ cambiar_prioridad() {
     if [ $pid -gt 0 ]; then # Faltaba $ en pid
         # Cambiado echo por -p de read
         read -p "Introduce la nueva prioridad (-20 a 19): " prioridad
-        renice -n $prioridad -p $pid
+        renice $prioridad -p $pid # Falta -n en renice
+        sleep 3
     fi # Falta fi para cerrar el if
 }
 
@@ -65,4 +66,4 @@ while [ "$opcion" != "4" ]; do
 done
 
 echo "Programa finalizado."
-exit 5
+exit 0
