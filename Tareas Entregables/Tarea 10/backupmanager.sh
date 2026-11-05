@@ -4,7 +4,6 @@
 # Manuel González López
 # Data: 04-11-2026
 
-tamanofile=$(ls -lh $directoriobackup/$archivo)
 directoriobackup="/var/backup"
 directoriodatos="/home/aso/datos"
 fecharchivo=$(date -d now +%Y%m%d%H%M)
@@ -24,15 +23,21 @@ else
     if [ $? = 0 ]; then
         clear
     else
-        echo "Error 3, no se pudo crear la carpeta de las backups"
+        echo "Error 3, no se pudo crear la carpeta de las backcut -d" " -f7ups"
         exit 3
     fi
 fi
 
-if [ -d "$directoriodatos"]; then # Comprobar si existe el directorio de datos y crearlo
+if [ -d "$directoriodatos" ]; then # Comprobar si existe el directorio de datos y crearlo
     clear
 else
     mkdir -p $directoriodatos >/dev/null 2>&1
+fi
+
+if [ -f $log ]; then
+    clear
+else
+    touch $log
 fi
 
 case $1 in # Case para el tipo de la copia que hay que hacer
@@ -42,15 +47,17 @@ C)
     sleep 2
     echo "Para hacer la copia debemos de borrar todos los estado.snar"
     sleep 2
-    read -p "¿Quieres continuar? (S/N)" decision
+    read -p "¿Quieres continuar? (S/N): " decision
     if [ "$decision" = "S" -o "$decision" = "s" ]; then
         rm -rf $directoriobackup/estado.snar
         rm -rf $directoriobackup/estado_dif.snar
         rm -rf $directoriobackup/estado_inc.snar
-        tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado.snar" "$directoriodatos"
+        tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado.snar" "$directoriodatos" >/dev/null 2>&1
+        errortar=$?
         if [ $errortar = 0 ]; then
-            echo "Copia Incremental completada el "$(date)" ,con el nombre $archivo y con tamaño "$($tamanofile | cut -d" " -f7) >$log
-            echo "Copia finalizada"
+            tamanofile=$(ls -sh $directoriobackup/$archivo | tail -n1 | cut -d" " -f1)
+            echo "Copia Completa finalizada el "$(date)", con el nombre $archivo y con tamaño $tamanofile" >$log
+            echo "Copia finalizada, archivo con nombre $directoriobackup/$archivo"
             exit 0
         else
             echo "Fallo la copia de seguridad con error $errortar"
@@ -60,7 +67,6 @@ C)
     fi
     ;;
 D)
-    archivo=$fecharchivo"_copia_diferencial.tar.gz"
     echo "Modo seleccionado: Copia Diferencial"
     sleep 2
     if [ -f "$directoriobackup/estado.snar" ]; then
@@ -68,21 +74,26 @@ D)
         clear
     else
         echo "No hay copia completa de la que realizar diferencial, voy a realizar una copia completa"
-        tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado_dif.snar" "$directoriodatos"
+        sleep 2
+        archivo=$fecharchivo"_copia_completa.tar.gz"
+        tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado.snar" "$directoriodatos" >/dev/null 2>&1
+        cp "$directoriobackup/estado.snar" "$directoriobackup/estado_dif.snar"
         clear
     fi
-    tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado_dif.snar" "$directoriodatos"
+    archivo=$fecharchivo"_copia_diferencial.tar.gz"
+    tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado_dif.snar" "$directoriodatos" >/dev/null 2>&1
     errortar=$?
     if [ $errortar = 0 ]; then
-        echo "Copia Incremental completada el "$(date)" ,con el nombre $archivo y con tamaño "$($tamanofile | cut -d" " -f7) >$log
-        echo "Copia finalizada"
+        tamanofile=$(ls -sh $directoriobackup/$archivo | tail -n1 | cut -d" " -f1)
+        echo "Copia Diferencial finalizada el "$(date)", con el nombre $archivo y con tamaño $tamanofile" >$log
+        echo "Copia finalizada, archivo con nombre $directoriobackup/$archivo"
         exit 0
     else
         echo "Fallo la copia de seguridad con error $errortar"
     fi
     ;;
 I)
-    archivo=$fecharchivo"_copia_incremental.tar.gz"
+
     echo "Modo seleccionado: Copia Incremental"
     sleep 2
     if [ -f "$directoriobackup/estado_inc.snar" ]; then
@@ -93,15 +104,20 @@ I)
             clear
         else
             echo "No hay copia completa de la que realizar incremental, voy a realizar una copia completa"
-            tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado_inc.snar" "$directoriodatos"
+            sleep 2
+            archivo=$fecharchivo"_copia_completa.tar.gz"
+            tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado.snar" "$directoriodatos" >/dev/null 2>&1
+            cp "$directoriobackup/estado.snar" "$directoriobackup/estado_inc.snar"
             clear
         fi
     fi
-    tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado_inc.snar" "$directoriodatos"
+    archivo=$fecharchivo"_copia_incremental.tar.gz"
+    tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado_inc.snar" "$directoriodatos" >/dev/null 2>&1
     errortar=$?
     if [ $errortar = 0 ]; then
-        echo "Copia Incremental completada el "$(date)" ,con el nombre $archivo y con tamaño "$($tamanofile | cut -d" " -f7) >$log
-        echo "Copia finalizada"
+        tamanofile=$(ls -sh $directoriobackup/$archivo | tail -n1 | cut -d" " -f1)
+        echo "Copia Incremental finalizada el "$(date)", con el nombre $archivo y con tamaño $tamanofile" >$log
+        echo "Copia finalizada, archivo con nombre $directoriobackup/$archivo"
         exit 0
     else
         echo "Fallo la copia de seguridad con error $errortar"
