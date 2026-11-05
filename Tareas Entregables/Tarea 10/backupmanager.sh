@@ -32,6 +32,12 @@ if [ -d "$directoriodatos" ]; then # Comprobar si existe el directorio de datos 
     clear
 else
     mkdir -p $directoriodatos >/dev/null 2>&1
+    if [ $? = 0 ]; then
+        clear
+    else
+        echo "No se pudo crear el directorio, error 8"
+        exit 8
+    fi
 fi
 
 if [ -f $log ]; then
