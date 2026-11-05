@@ -23,7 +23,7 @@ else
     if [ $? = 0 ]; then
         clear
     else
-        echo "Error 3, no se pudo crear la carpeta de las backcut -d" " -f7ups"
+        echo "Error 3, no se pudo crear la carpeta de las backups"
         exit 3
     fi
 fi
