@@ -77,6 +77,7 @@ C)
         exit 4
     fi
     ;;
+
 D)
     echo "Modo seleccionado: Copia Diferencial"
     sleep 2
@@ -114,8 +115,8 @@ D)
         exit 4
     fi
     ;;
-I)
 
+I)
     echo "Modo seleccionado: Copia Incremental"
     sleep 2
     if [ -f "$directoriobackup/estado_inc.snar" ]; then # Comprobamos si existe estado_inc
@@ -156,6 +157,7 @@ I)
         exit 4
     fi
     ;;
+
 *)
     echo "Modo de operación no reconocido, error 1" # Controlamos el modo de operacion
     exit 1
