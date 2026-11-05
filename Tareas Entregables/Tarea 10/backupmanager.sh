@@ -53,69 +53,75 @@ C)
     archivo=$fecharchivo"_copia_completa.tar.gz"
     echo "Modo seleccionado: Copia Completa"
     sleep 2
-    echo "Para hacer la copia debemos de borrar todos los estado.snar"
+    echo "Para hacer la copia debemos de borrar todos los estado.snar" # Tenemos que borrar los archivos snar para evitar conflictos y que las otras copias se realicen partiendo de la última completa
     sleep 2
     rm -rf $directoriobackup/estado.snar
     rm -rf $directoriobackup/estado_dif.snar
     rm -rf $directoriobackup/estado_inc.snar
-    tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado.snar" "$directoriodatos" >/dev/null 2>&1
-    errortar=$?
+    tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado.snar" "$directoriodatos" >/dev/null 2>&1 # Hacemos la copia
+    errortar=$?                                                                                                                   # Controlamos el error del tar
     if [ $errortar = 0 ]; then
         tamanofile=$(ls -sh $directoriobackup/$archivo | tail -n1 | cut -d" " -f1)
         echo "Copia Completa finalizada el "$(date)", con el nombre $archivo y con tamaño $tamanofile" >$log
         echo "Copia Completa finalizada, archivo con nombre $directoriobackup/$archivo"
         exit 0
     else
-        echo "Fallo la copia de seguridad con error $errortar"
+        echo "Fallo la copia de seguridad con error $errortar" # Damos el error del tar
+        echo "Error 4 del script"
+        exit 4
     fi
     ;;
 D)
     echo "Modo seleccionado: Copia Diferencial"
     sleep 2
     if [ -f "$directoriobackup/estado.snar" ]; then
-        cp "$directoriobackup/estado.snar" "$directoriobackup/estado_dif.snar"
+        cp "$directoriobackup/estado.snar" "$directoriobackup/estado_dif.snar" # Comprobamos si existe estado.snar y copiamos a dif
     else
         echo "Voy a realizar una copia completa"
         sleep 2
         archivo=$fecharchivo"_copia_completa.tar.gz"
-        tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado.snar" "$directoriodatos" >/dev/null 2>&1
+        tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado.snar" "$directoriodatos" >/dev/null 2>&1 # Realizamos una copia completa si no existia una previamente
         errortar=$?
         if [ $errortar = 0 ]; then
             tamanofile=$(ls -sh $directoriobackup/$archivo | tail -n1 | cut -d" " -f1)
-            echo "Copia Completa finalizada el "$(date)", con el nombre $archivo y con tamaño $tamanofile" >$log
+            echo "Copia Completa finalizada el "$(date)", con el nombre $archivo y con tamaño $tamanofile" >$log # Linea para el log
             echo "Copia Completa finalizada, archivo con nombre $directoriobackup/$archivo"
         else
             echo "Fallo la copia de seguridad con error $errortar"
+            echo "Error 4 del script"
+            exit 4
         fi
         sleep 2
-        cp "$directoriobackup/estado.snar" "$directoriobackup/estado_dif.snar"
+        cp "$directoriobackup/estado.snar" "$directoriobackup/estado_dif.snar" # Copiamos el nuevo estado.snar para que se pueda hacer la copia
     fi
     archivo=$fecharchivo"_copia_diferencial.tar.gz"
-    tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado_dif.snar" "$directoriodatos" >/dev/null 2>&1
+    tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado_dif.snar" "$directoriodatos" >/dev/null 2>&1 # Hacemos copia diferencial
     errortar=$?
     if [ $errortar = 0 ]; then
         tamanofile=$(ls -sh $directoriobackup/$archivo | tail -n1 | cut -d" " -f1)
-        echo "Copia Diferencial finalizada el "$(date)", con el nombre $archivo y con tamaño $tamanofile" >$log
+        echo "Copia Diferencial finalizada el "$(date)", con el nombre $archivo y con tamaño $tamanofile" >$log # Linea para el log
         echo "Copia Diferencial finalizada, archivo con nombre $directoriobackup/$archivo"
         exit 0
     else
         echo "Fallo la copia de seguridad con error $errortar"
+        echo "Error 4 del script"
+        exit 4
     fi
     ;;
 I)
 
     echo "Modo seleccionado: Copia Incremental"
     sleep 2
-    if [ -f "$directoriobackup/estado_inc.snar" ]; then
+    if [ -f "$directoriobackup/estado_inc.snar" ]; then # Comprobamos si existe estado_inc
         echo
     else
-        if [ -f "$directoriobackup/estado.snar" ]; then
+        if [ -f "$directoriobackup/estado.snar" ]; then # Si no existe, pero exite estado.snar se copia
             cp "$directoriobackup/estado.snar" "$directoriobackup/estado_inc.snar"
         else
-            echo "Voy a realizar una copia completa"
+            echo "Voy a realizar una copia completa" # Si no existe estado.snar tampoco, entonces hacemos una copia completa
             sleep 2
             archivo=$fecharchivo"_copia_completa.tar.gz"
-            tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado.snar" "$directoriodatos" >/dev/null 2>&1
+            tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado.snar" "$directoriodatos" >/dev/null 2>&1 # Realizamos una copia completa si no existia una previamente
             errortar=$?
             if [ $errortar = 0 ]; then
                 tamanofile=$(ls -sh $directoriobackup/$archivo | tail -n1 | cut -d" " -f1)
@@ -123,13 +129,15 @@ I)
                 echo "Copia Completa finalizada, archivo con nombre $directoriobackup/$archivo"
             else
                 echo "Fallo la copia de seguridad con error $errortar"
+                echo "Error 4 del script"
+                exit 4
             fi
             sleep 2
-            cp "$directoriobackup/estado.snar" "$directoriobackup/estado_inc.snar"
+            cp "$directoriobackup/estado.snar" "$directoriobackup/estado_inc.snar" # Copiamos el nuevo estado.snar para que se pueda hacer la copia
         fi
     fi
     archivo=$fecharchivo"_copia_incremental.tar.gz"
-    tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado_inc.snar" "$directoriodatos" >/dev/null 2>&1
+    tar -czf "$directoriobackup/$archivo" --listed-incremental="$directoriobackup/estado_inc.snar" "$directoriodatos" >/dev/null 2>&1 # Realizamos la copia incremental
     errortar=$?
     if [ $errortar = 0 ]; then
         tamanofile=$(ls -sh $directoriobackup/$archivo | tail -n1 | cut -d" " -f1)
@@ -138,13 +146,15 @@ I)
         exit 0
     else
         echo "Fallo la copia de seguridad con error $errortar"
+        echo "Error 4 del script"
+        exit 4
     fi
     ;;
 *)
-    echo "Modo de operación no reconocido, error 1"
+    echo "Modo de operación no reconocido, error 1" # Controlamos el modo de operacion
     exit 1
     ;;
 esac
 
-echo "Ejecución finalizada, saliendo del script"
+echo "Ejecución finalizada, saliendo del script" # Fin del script
 exit 0
