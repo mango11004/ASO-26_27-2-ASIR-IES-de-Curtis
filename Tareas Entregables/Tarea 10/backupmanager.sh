@@ -47,7 +47,7 @@ else
 fi
 
 if [ -f "$directoriobackup/estado.snar" ]; then
-    echo "INFO: La última copia de seguridad completa fue realizada el "$(sudo debugfs -R 'stat "/var/backup/estado.snar"' /dev/sda1 | grep ctime | cut -d" " -f5,6,7,8,9)
+    echo "INFO: La última copia de seguridad completa fue realizada el "$(stat -c %w $directoriobackup/estado.snar | cut -d. -f1)
     sleep 3
 else
     echo "INFO: No existe ninguna copia de seguridad completa"
