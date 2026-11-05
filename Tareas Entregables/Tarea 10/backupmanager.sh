@@ -162,6 +162,7 @@ I)
     echo "Modo de operación no reconocido, error 1" # Controlamos el modo de operacion
     exit 1
     ;;
+
 esac
 
 echo "Ejecución finalizada, saliendo del script" # Fin del script
