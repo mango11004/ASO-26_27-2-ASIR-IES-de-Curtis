@@ -70,7 +70,7 @@ C)
         tamanofile=$(ls -sh $directoriobackup/$archivo | tail -n1 | cut -d" " -f1)
         echo "Copia Completa finalizada el "$(date)", con el nombre $archivo y con tamaño $tamanofile" >$log
         echo "Copia Completa finalizada, archivo con nombre $directoriobackup/$archivo"
-        scp -i /root/.ssh/id_ed25519 $directoriobackup/$archivo root@10.0.9.1:/home/aso/backup/
+        scp -i /root/.ssh/id_ed25519 $directoriobackup/$archivo root@10.0.9.1:/home/aso/backup/ >/dev/null 2>&1
         exit 0
     else
         echo "Fallo la copia de seguridad con error $errortar" # Damos el error del tar
@@ -94,6 +94,7 @@ D)
             tamanofile=$(ls -sh $directoriobackup/$archivo | tail -n1 | cut -d" " -f1)
             echo "Copia Completa finalizada el "$(date)", con el nombre $archivo y con tamaño $tamanofile" >$log # Linea para el log
             echo "Copia Completa finalizada, archivo con nombre $directoriobackup/$archivo"
+            scp -i /root/.ssh/id_ed25519 $directoriobackup/$archivo root@10.0.9.1:/home/aso/backup/ >/dev/null 2>&1
         else
             echo "Fallo la copia de seguridad con error $errortar"
             echo "Error 4 del script"
@@ -109,7 +110,7 @@ D)
         tamanofile=$(ls -sh $directoriobackup/$archivo | tail -n1 | cut -d" " -f1)
         echo "Copia Diferencial finalizada el "$(date)", con el nombre $archivo y con tamaño $tamanofile" >$log # Linea para el log
         echo "Copia Diferencial finalizada, archivo con nombre $directoriobackup/$archivo"
-        scp -i /root/.ssh/id_ed25519 $directoriobackup/$archivo root@10.0.9.1:/home/aso/backup/
+        scp -i /root/.ssh/id_ed25519 $directoriobackup/$archivo root@10.0.9.1:/home/aso/backup/ >/dev/null 2>&1
         exit 0
     else
         echo "Fallo la copia de seguridad con error $errortar"
@@ -136,6 +137,7 @@ I)
                 tamanofile=$(ls -sh $directoriobackup/$archivo | tail -n1 | cut -d" " -f1)
                 echo "Copia Completa finalizada el "$(date)", con el nombre $archivo y con tamaño $tamanofile" >$log
                 echo "Copia Completa finalizada, archivo con nombre $directoriobackup/$archivo"
+                scp -i /root/.ssh/id_ed25519 $directoriobackup/$archivo root@10.0.9.1:/home/aso/backup/ >/dev/null 2>&1
             else
                 echo "Fallo la copia de seguridad con error $errortar"
                 echo "Error 4 del script"
@@ -152,7 +154,7 @@ I)
         tamanofile=$(ls -sh $directoriobackup/$archivo | tail -n1 | cut -d" " -f1)
         echo "Copia Incremental finalizada el "$(date)", con el nombre $archivo y con tamaño $tamanofile" >$log
         echo "Copia Incremental finalizada, archivo con nombre $directoriobackup/$archivo"
-        scp -i /root/.ssh/id_ed25519 $directoriobackup/$archivo root@10.0.9.1:/home/aso/backup/
+        scp -i /root/.ssh/id_ed25519 $directoriobackup/$archivo root@10.0.9.1:/home/aso/backup/ >/dev/null 2>&1
         exit 0
     else
         echo "Fallo la copia de seguridad con error $errortar"
